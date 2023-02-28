@@ -1,4 +1,4 @@
 package com.painting.canvas.member;
 
-public class memberService {
+public class MemberService {
 }
