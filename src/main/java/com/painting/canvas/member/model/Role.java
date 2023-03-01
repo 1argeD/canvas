@@ -1,4 +1,4 @@
-package com.painting.canvas.member;
+package com.painting.canvas.member.model;
 
 
 import lombok.Getter;
