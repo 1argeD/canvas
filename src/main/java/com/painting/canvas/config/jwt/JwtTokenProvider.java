@@ -3,47 +3,49 @@ package com.painting.canvas.config.jwt;
 import com.painting.canvas.config.jwt.tokenDto.TokenDto;
 import com.painting.canvas.config.securityConfig.UserDetailsImpl;
 import com.painting.canvas.member.model.Member;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 
 import javax.annotation.PostConstruct;
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-    @Value("${jwt.secretKey}")
-    private String secretKet;
-    public static String BEARER_PREFIX = "Bearer ";
+    @Value("${jwt.jwtEncryptionKey}")
+    private String secretKey;
 
-    private final Long TokenValidTime = 60*60*1000L;
-    private final Long RefreshTokenValidTime = 7 * 24 * 60 * 60 * 1000L;
+    private static final String BEARER_PREFIX = "Bearer ";
 
-    private Key key;
+    private final long tokenValidTime = 60 * 60 * 1000L; // 1 hour
+    private final long refreshTokenValidTime = 7 * 24 * 60 * 60 * 1000L; // 7 days
+
+    private  SecretKey key;
 
     @PostConstruct
     protected void init() {
-        secretKet = Base64.getEncoder().encodeToString(secretKet.getBytes());
-        byte[] keyBates = Base64.getDecoder().decode(secretKet);
-        key = Keys.hmacShaKeyFor(keyBates);
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        byte[] keyBytes = Base64.getDecoder().decode(secretKey);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     public TokenDto createToken(Member member) {
-        long now = (new Date().getTime());
+        long now = System.currentTimeMillis();
         Claims claims = Jwts.claims().setSubject(member.getId().toString());
         claims.put("role", member.getRole().toString());
-        Date accessTokenExpiresIn = new Date(now + TokenValidTime);
-        Date refreshTokenExpiresIn = new Date(now + RefreshTokenValidTime);
+        Date accessTokenExpiresIn = new Date(now + tokenValidTime);
+        Date refreshTokenExpiresIn = new Date(now + refreshTokenValidTime);
 
         String accessToken = Jwts.builder()
                 .setClaims(claims)
@@ -73,11 +75,15 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String jwtToken) {
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jwtToken);
-        return true;
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(jwtToken);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 }
 

@@ -10,7 +10,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class JwtConfiguration {
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Override
     public void configure(HttpSecurity httpSecurity) {
         jwtFilter customJwtFilter = new jwtFilter(jwtTokenProvider);
         JwtExceptionFilter jwtExceptionFilter = new JwtExceptionFilter();
