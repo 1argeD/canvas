@@ -10,6 +10,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -20,11 +23,11 @@ import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
 
-@Component
 @RequiredArgsConstructor
+@Component
 public class JwtTokenProvider {
-    @Value("${jwt.jwtEncryptionKey}")
-    private String secretKey;
+    @Value("${jwt.secret_key}")
+    private String SECRET_KEY;
 
     private static final String BEARER_PREFIX = "Bearer ";
 
@@ -35,8 +38,8 @@ public class JwtTokenProvider {
 
     @PostConstruct
     protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-        byte[] keyBytes = Base64.getDecoder().decode(secretKey);
+        SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
+        byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 

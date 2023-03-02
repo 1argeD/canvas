@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class jwtFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
 
     public static String AUTHORIZATION_HEADER = "Authorization";
     public static String REFRESH_TOKEN_HEADER = "Refresh-Token";

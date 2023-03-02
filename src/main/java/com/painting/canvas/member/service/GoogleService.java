@@ -3,7 +3,6 @@ package com.painting.canvas.member.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.painting.canvas.config.jwt.tokenDto.TokenDto;
-import com.painting.canvas.member.Dto.GoogleUserInfo;
 import com.painting.canvas.member.Dto.GoogleUserInfoDto;
 import com.painting.canvas.member.Dto.MemberDto;
 import com.painting.canvas.member.Dto.SocialUserDto;
