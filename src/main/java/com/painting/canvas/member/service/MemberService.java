@@ -23,7 +23,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-
+    @Transactional
     public void logout(UserDetailsImpl userDetails) {
         refreshTokenRepository.deleteByMember_Id(userDetails.getMemberId());
     }

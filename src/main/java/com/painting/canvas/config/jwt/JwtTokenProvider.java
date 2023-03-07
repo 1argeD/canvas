@@ -20,13 +20,16 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
+import javax.validation.Valid;
 import java.util.Base64;
 import java.util.Date;
 
 @RequiredArgsConstructor
 @Component
+@PropertySource("classpath://")
 public class JwtTokenProvider {
-    @Value("${jwt.secret_key}")
+
+    @Valid("${jwt.secret_key}")
     private String SECRET_KEY;
 
     private static final String BEARER_PREFIX = "Bearer ";

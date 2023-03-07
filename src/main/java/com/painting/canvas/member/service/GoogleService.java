@@ -11,6 +11,7 @@ import com.painting.canvas.member.model.Role;
 import com.painting.canvas.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -23,16 +24,18 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.Valid;
+
 @Service
 @RequiredArgsConstructor
 public class GoogleService {
-    @Value("${google.client-id}")
+    @Valid("${.google.client-id}")
     String googleClientId;
-    @Value("${google.client-secret}")
+    @Valid("${.google.client-secre}")
     String googleClientSecret;
-    @Value("${.google.redirect-uri}")
-    String googleRedirectUrl;
 
+    @Valid("${google.redirect-uri}")
+    String googleRedirectUrl;
     private final MemberRepository memberRepository;
 
     private final MemberService memberService;
@@ -46,7 +49,7 @@ public class GoogleService {
         MultiValueMap<String , String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", googleClientId);
-        body.add("redirect_url", googleRedirectUrl);
+        body.add("redirect_url", ACCESS_TOKEN_URL);
         body.add("code", code);
 
         HttpEntity<MultiValueMap<String , String>>googleTokenRequest = new HttpEntity<>(body, headers);

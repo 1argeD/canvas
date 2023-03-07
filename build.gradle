@@ -29,6 +29,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'/*시큐리티*/
     implementation 'org.springframework:spring-context:5.3.19'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     compileOnly 'org.projectlombok:lombok'
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
