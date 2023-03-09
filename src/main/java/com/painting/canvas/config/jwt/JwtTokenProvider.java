@@ -26,11 +26,9 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 @Component
-@PropertySource("classpath://")
 public class JwtTokenProvider {
 
-    @Valid("${jwt.secret_key}")
-    private String SECRET_KEY;
+    private String SECRET_KEY="87SD980AGG45r3HFDH321D4D4H5D32AS6236H7D56AGFDGW";
 
     private static final String BEARER_PREFIX = "Bearer ";
 

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 
@@ -13,27 +14,50 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(unique = true)
-    private Long googleId;
+    private String  googleId;
 
-    @Column(unique = true)
-    private Long kakaoId;
+    private String  kakaoId;
 
-    @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
     private String email;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Role role;
 
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId() {
+        this.googleId = googleId;
+    }
+
+    public String getKakaoId() {
+        return kakaoId;
+    }
+    public void setKakaoId() {
+        this.kakaoId = kakaoId;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
     public static Member of(GoogleUserInfoDto googleUserInfoDto) {
         return Member.builder()
@@ -42,9 +66,8 @@ public class Member {
                 .build();
     }
 
-    public Member update(String nickname ) {
+    public void update(String nickname ) {
         this.nickname = nickname;
-        return this;
     }
 
     public String getRoleKey() {

@@ -5,13 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Document
 public class MemberDto {
-    private Long id;
+    private String  id;
     private String nickname;
     private String email;
 

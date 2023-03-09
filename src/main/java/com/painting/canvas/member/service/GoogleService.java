@@ -24,18 +24,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.Valid;
 
 @Service
 @RequiredArgsConstructor
 public class GoogleService {
-    @Valid("${.google.client-id}")
-    String googleClientId;
-    @Valid("${.google.client-secre}")
-    String googleClientSecret;
+    String googleClientId = "589747262012-g37na5ksf8rkgr327p8a5omeppj7l7fo.apps.googleusercontent.com";
 
-    @Valid("${google.redirect-uri}")
-    String googleRedirectUrl;
+    String googleClientSecret = "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";
+
+    String googleRedirectUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=589747262012-g37na5ksf8rkgr327p8a5omeppj7l7fo.apps.googleusercontent.com&response_type=token&redirect_uri=https://localhost:3000&scope=https://www.googleapis.com/auth/userinfo.email";
     private final MemberRepository memberRepository;
 
     private final MemberService memberService;
@@ -90,15 +87,17 @@ public class GoogleService {
         Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties").get("nickname").asText();
         String email = jsonNode.get("properties").get("email").asText();
-        return new GoogleUserInfoDto(id, nickname, email);
+        return new GoogleUserInfoDto(id.toString(), nickname, email);
     }
 
     Member signupGoogle(GoogleUserInfoDto googleUserInfoDto) {
-        Long googleId = googleUserInfoDto.getGoogleId();
-        return memberRepository.findAllByGoogleId(googleId).orElseGet(() -> {
-            Member googleUser = Member.of(googleUserInfoDto);
-            googleUser.setMemberRole(Role.USER);
-            return memberRepository.save(googleUser);
-        });
+        String googleId = googleUserInfoDto.getGoogleId();
+        return memberRepository.findAllByGoogleId(googleId).
+    }
+
+    {
+        Member googleUser = Member.of(googleUserInfoDto);
+        googleUser.setMemberRole(Role.USER);
+        return memberRepository.save(googleUser);
     }
 }
