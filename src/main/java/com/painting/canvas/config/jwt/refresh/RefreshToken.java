@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class RefreshToken {
     @Id
     @Column(nullable = false)
-    private Long id;
+    private String id;
 
     @JoinColumn(name="memberId", nullable = false)
     @OneToOne(fetch = FetchType.LAZY)

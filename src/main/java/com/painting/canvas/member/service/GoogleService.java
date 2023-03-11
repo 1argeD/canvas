@@ -92,12 +92,12 @@ public class GoogleService {
 
     Member signupGoogle(GoogleUserInfoDto googleUserInfoDto) {
         String googleId = googleUserInfoDto.getGoogleId();
-        return memberRepository.findAllByGoogleId(googleId).
-    }
-
-    {
-        Member googleUser = Member.of(googleUserInfoDto);
-        googleUser.setMemberRole(Role.USER);
-        return memberRepository.save(googleUser);
+        if(memberRepository.findAllByGoogleId(googleId)!=null) {
+            return memberRepository.findAllByGoogleId(googleId);
+        } else {
+            Member googleUser = Member.of(googleUserInfoDto);
+            googleUser.setMemberRole(Role.USER);
+            return memberRepository.save(googleUser);
+        }
     }
 }

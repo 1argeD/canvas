@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("user/google/callback/**").permitAll()
-                .antMatchers("/","/css/**","/js/**", "/h2-console/**/").permitAll()
+                .antMatchers("/","/css/**","/js/**", "/h2-console/**/","/mongoDB").permitAll()
                 .antMatchers("api/v1/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
