@@ -27,8 +27,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
-
-    private String SECRET_KEY="87SD980AGG45r3HFDH321D4D4H5D32AS6236H7D56AGFDGW";
+    @Valid("${jwt.secret_key}")
+    private String SECRET_KEY;
 
     private static final String BEARER_PREFIX = "Bearer ";
 
@@ -46,7 +46,7 @@ public class JwtTokenProvider {
 
     public TokenDto createToken(Member member) {
         long now = System.currentTimeMillis();
-        Claims claims = Jwts.claims().setSubject(member.getId().toString());
+        Claims claims = Jwts.claims().setSubject(member.getId());
         claims.put("role", member.getRole().toString());
         Date accessTokenExpiresIn = new Date(now + tokenValidTime);
         Date refreshTokenExpiresIn = new Date(now + refreshTokenValidTime);
@@ -74,7 +74,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String jwtToken) {
         Claims claims = getClaims(jwtToken);
-        UserDetailsImpl userDetails = new UserDetailsImpl(Long.parseLong(claims.getSubject()), claims.get("role").toString());
+        UserDetailsImpl userDetails = new UserDetailsImpl((claims.getSubject()), claims.get("role").toString());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

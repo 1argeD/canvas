@@ -10,7 +10,6 @@ import com.painting.canvas.member.model.Member;
 import com.painting.canvas.member.model.Role;
 import com.painting.canvas.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -18,21 +17,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.Valid;
+
 
 @Service
 @RequiredArgsConstructor
 public class GoogleService {
-    String googleClientId = "589747262012-g37na5ksf8rkgr327p8a5omeppj7l7fo.apps.googleusercontent.com";
 
-    String googleClientSecret = "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";
+    @Valid("${client-id}")
+    String googleClientId;
 
-    String googleRedirectUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=589747262012-g37na5ksf8rkgr327p8a5omeppj7l7fo.apps.googleusercontent.com&response_type=token&redirect_uri=https://localhost:3000&scope=https://www.googleapis.com/auth/userinfo.email";
+    @Valid("${client-secret}")
+    String googleClientSecret;
+
+    @Valid("${redirect-uri}")
+    String googleRedirectUrl;
     private final MemberRepository memberRepository;
 
     private final MemberService memberService;
@@ -84,20 +91,19 @@ public class GoogleService {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        Long id = jsonNode.get("id").asLong();
+        long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties").get("nickname").asText();
         String email = jsonNode.get("properties").get("email").asText();
-        return new GoogleUserInfoDto(id.toString(), nickname, email);
+        return new GoogleUserInfoDto(Long.toString(id), nickname, email);
     }
 
     Member signupGoogle(GoogleUserInfoDto googleUserInfoDto) {
         String googleId = googleUserInfoDto.getGoogleId();
-        if(memberRepository.findAllByGoogleId(googleId)!=null) {
-            return memberRepository.findAllByGoogleId(googleId);
-        } else {
-            Member googleUser = Member.of(googleUserInfoDto);
-            googleUser.setMemberRole(Role.USER);
-            return memberRepository.save(googleUser);
-        }
+        return memberRepository.findAllByGoogleId(googleId)
+                .orElseGet( () -> {
+                Member googleUser = Member.of(googleUserInfoDto);
+                googleUser.setMemberRole(Role.USER);
+                return memberRepository.save(googleUser);
+                });
     }
 }

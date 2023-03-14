@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.IdentifierLoadAccess;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
+@Document("Member")
 public class Member {
     @Id
     private String id;
@@ -28,35 +29,13 @@ public class Member {
     private String email;
     private Role role;
 
-
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getGoogleId() {
-        return googleId;
-    }
-
-    public void setGoogleId() {
+    public Member(String id, String googleId, String kakaoId, String email, Role role ) {
+        super();
+        this.id =id;
         this.googleId = googleId;
-    }
-
-    public String getKakaoId() {
-        return kakaoId;
-    }
-    public void setKakaoId() {
         this.kakaoId = kakaoId;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getEmail() {
-        return email;
+        this.email = email;
+        this.role = role;
     }
 
     public static Member of(GoogleUserInfoDto googleUserInfoDto) {

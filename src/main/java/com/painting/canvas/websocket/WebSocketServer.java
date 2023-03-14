@@ -13,7 +13,7 @@ import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
 @Component
 public class WebSocketServer extends AbstractWebSocketHandler {
-    private static Set<WebSocketSession> clients = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<WebSocketSession> clients = Collections.synchronizedSet(new HashSet<>());
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {

@@ -4,13 +4,13 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
-public interface RefreshTokenRepository extends MongoRepository<RefreshToken, Long> {
-    void deleteByMember_Id(Long memberId);
+@Repository
+public interface RefreshTokenRepository extends MongoRepository<RefreshToken, String > {
+    void deleteByMember_Id(String memberId);
 
-    @EntityGraph(attributePaths = {"member"})
     Optional<RefreshToken> findByTokenValue(String tokenValue);
 }

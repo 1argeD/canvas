@@ -14,10 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private Long memberId;
+    private String  memberId;
     private String role;
 
-    public Long getMemberId() {
+    public String  getMemberId() {
         return this.memberId;
     }
 
