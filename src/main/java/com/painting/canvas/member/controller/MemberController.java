@@ -29,7 +29,6 @@ public class MemberController {
         return ResponseEntity.ok()
                 .headers(MemberUtil.getTokenHeaders(socialUserDto.getTokenDto()))
                 .body(socialUserDto.getMemberDto());
-
     }
 
     @PostMapping("/member/logout")

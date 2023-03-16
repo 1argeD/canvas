@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.IdentifierLoadAccess;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;

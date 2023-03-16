@@ -11,6 +11,7 @@ import com.painting.canvas.member.model.Role;
 import com.painting.canvas.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +33,13 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class GoogleService {
 
-    @Valid("${client-id}")
+    @Value("${client-id}")
     String googleClientId;
 
-    @Valid("${client-secret}")
+    @Value("${client-secret}")
     String googleClientSecret;
 
-    @Valid("${redirect-uri}")
+    @Value("${redirect-uri}")
     String googleRedirectUrl;
     private final MemberRepository memberRepository;
 
