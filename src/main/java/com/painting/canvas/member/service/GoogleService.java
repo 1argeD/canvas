@@ -87,7 +87,7 @@ public class GoogleService {
         HttpEntity<MultiValueMap<String , String >> googleInfoRequest = new HttpEntity<>(headers);
 
         RestTemplate rt = new RestTemplate();
-        ResponseEntity<String > response = rt.exchange("https://www.googleapis.com/oauth2/v2/userinfo?access_token=", HttpMethod.POST, googleInfoRequest, String.class);
+        ResponseEntity<String> response = rt.exchange("https://www.googleapis.com/oauth2/v2/userinfo?access_token=", HttpMethod.POST, googleInfoRequest, String.class);
 
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();

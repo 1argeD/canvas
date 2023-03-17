@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.dialect.lock.PessimisticReadUpdateLockingStrategy;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("Member")
+@Document(collection = "Member")
 public class Member {
     @Id
     private String id;
@@ -28,14 +29,46 @@ public class Member {
     private String email;
     private Role role;
 
-    public Member(String id, String googleId, String kakaoId, String email, Role role ) {
-        super();
-        this.id =id;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
         this.googleId = googleId;
-        this.kakaoId = kakaoId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
         this.role = role;
     }
+
 
     public static Member of(GoogleUserInfoDto googleUserInfoDto) {
         return Member.builder()
@@ -44,7 +77,7 @@ public class Member {
                 .build();
     }
 
-    public void update(String nickname ) {
+    public void update(String nickname) {
         this.nickname = nickname;
     }
 
